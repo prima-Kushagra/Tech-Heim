@@ -1,21 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
 import { User } from "src/users/users.entity";
-
+import { OrderItem } from "src/order-item/order-item.entity";
 @Entity()
 export class Order {
 
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @ManyToOne(() => User, (user) => user.orders)
-  user: User;
+    @OneToMany(() => OrderItem, (item) => item.order)
+    orderItems: OrderItem[];
 
-  @Column("decimal")
-  totalPrice: number;
+    @ManyToOne(() => User, (user) => user.orders)
+    user: User;
 
-  @Column({ default: "pending" })
-  status: string;
+    @Column("decimal")
+    totalPrice: number;
 
-  @Column()
-  createdAt: Date;
+    @Column({ default: "pending" })
+    status: string;
+
+    @Column()
+    createdAt: Date;
 }

@@ -15,6 +15,9 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrderItemController } from './order-item/order-item.controller';
+import { OrderItemModule } from './order-item/order-item.module';
+import { OrderItemService } from './order-item/order-item.service';
 
 @Module({
   imports: [AuthModule, ProductsModule, CartModule, OrdersModule, CategoriesModule, WishlistModule, ReviewsModule, UsersModule ,
@@ -22,14 +25,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'postgres',
+      username: 'postgres', 
       password: 'Kushagr@123',
       database: 'techheim',
       autoLoadEntities: true,
       synchronize: true,
     }),
+    OrderItemModule,
   ],
-  controllers: [AppController, CartController, OrdersController],
-  providers: [AppService, CartService, OrdersService, UsersService],
+  controllers: [AppController, CartController, OrdersController, OrderItemController],
+  providers: [AppService, CartService, OrdersService, UsersService, OrderItemService],
 })
 export class AppModule {}
