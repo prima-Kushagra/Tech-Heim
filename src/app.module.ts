@@ -14,9 +14,21 @@ import { WishlistModule } from './wishlist/wishlist.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [AuthModule, ProductsModule, CartModule, OrdersModule, CategoriesModule, WishlistModule, ReviewsModule, UsersModule],
+  imports: [AuthModule, ProductsModule, CartModule, OrdersModule, CategoriesModule, WishlistModule, ReviewsModule, UsersModule ,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'Kushagr@123',
+      database: 'techheim',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+  ],
   controllers: [AppController, CartController, OrdersController],
   providers: [AppService, CartService, OrdersService, UsersService],
 })
