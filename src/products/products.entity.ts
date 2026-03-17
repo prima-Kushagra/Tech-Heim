@@ -13,8 +13,8 @@ export class Product {
   @Column("text")
   description: string;
 
-  @Column("decimal")
-  price: number;
+  @Column({ type: "decimal", precision: 10, scale: 2 })
+price: number;
 
   @Column({ default: 0 })
   stock: number;
