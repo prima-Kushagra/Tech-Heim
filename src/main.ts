@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Tech-Heim Admin API')
-    .setDescription('Admin dashboard API for managing products, categories, users, orders and carts')
+    .setDescription('Admin dashboard API')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -18,7 +18,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3000; 
   await app.listen(port);
 }
 bootstrap();

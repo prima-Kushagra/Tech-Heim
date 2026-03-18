@@ -19,23 +19,20 @@ import { OrderItemModule } from './order-item/order-item.module';
       isGlobal: true,
       ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
+
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: config.get<string>('DB_HOST'),
-        port: config.get<number>('DB_PORT'),
-        username: config.get<string>('DB_USERNAME'),
-        password: config.get<string>('DB_PASSWORD'),
-        database: config.get<string>('DB_NAME'),
+        url: config.get<string>('DATABASE_URL'),
+        ssl: {
+          rejectUnauthorized: false,
+        },
         autoLoadEntities: true,
         synchronize: true,
-        ssl: config.get('DB_HOST') !== 'localhost'
-          ? { rejectUnauthorized: false }
-          : false,
       }),
     }),
+
     AuthModule,
     ProductsModule,
     CartModule,
