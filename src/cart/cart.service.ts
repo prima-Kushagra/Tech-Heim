@@ -26,7 +26,6 @@ export class CartService {
       throw new NotFoundException(`Product with ID ${dto.productId} not found`);
     }
 
-    // check if already in cart
     const existing = await this.cartRepo.findOne({
       where: {
         user: { id: userId },
@@ -49,14 +48,28 @@ export class CartService {
     return this.cartRepo.save(cartItem);
   }
 
-  async getCart(userId: number) {
+  // Admin: get all carts across all users
+  getAllCarts() {
     return this.cartRepo.find({
-      where: { user: { id: userId } },
-      relations: ['product'],
+      relations: ['user', 'product'],
     });
   }
 
-  async removeFromCart(id: number) {
+  // Admin: get cart of a specific user
+  getCart(userId: number) {
+    return this.cartRepo.find({
+      where: { user: { id: userId } },
+      relations: ['user', 'product'],
+    });
+  }
+
+  // Admin: remove a specific cart item by cart id
+  removeFromCart(id: number) {
     return this.cartRepo.delete(id);
+  }
+
+  // Admin: clear entire cart of a user
+  clearCart(userId: number) {
+    return this.cartRepo.delete({ user: { id: userId } });
   }
 }

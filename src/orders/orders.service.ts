@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './orders.entity';
 import { Repository } from 'typeorm';
@@ -63,10 +63,31 @@ export class OrdersService {
     return savedOrder;
   }
 
-  findOrders(userId: number) {
+  // Admin: get all orders across all users
+  findAllOrders() {
+    return this.orderRepo.find({
+      relations: ['user', 'orderItems', 'orderItems.product'],
+    });
+  }
+
+  // Admin: get orders of a specific user
+  findOrdersByUser(userId: number) {
     return this.orderRepo.find({
       where: { user: { id: userId } },
-      relations: ['orderItems', 'orderItems.product'],
+      relations: ['user', 'orderItems', 'orderItems.product'],
     });
+  }
+
+  // Admin: update order status (placed, shipped, delivered, cancelled)
+  async updateOrderStatus(orderId: number, status: string) {
+    const order = await this.orderRepo.findOne({ where: { id: orderId } });
+    if (!order) throw new NotFoundException(`Order ${orderId} not found`);
+    order.status = status;
+    return this.orderRepo.save(order);
+  }
+
+  // Admin: delete an order
+  deleteOrder(orderId: number) {
+    return this.orderRepo.delete(orderId);
   }
 }

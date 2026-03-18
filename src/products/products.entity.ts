@@ -22,6 +22,9 @@ price: number;
   @Column()
   image: string;
 
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
+  discount: number;
+
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;
 }
