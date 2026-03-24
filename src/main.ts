@@ -12,7 +12,6 @@ async function bootstrap() {
     .setTitle('Tech-Heim Admin API')
     .setDescription('Admin dashboard API')
     .setVersion('1.0')
-    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
