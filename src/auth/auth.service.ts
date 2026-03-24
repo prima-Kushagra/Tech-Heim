@@ -11,13 +11,22 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
+  private readonly ADMIN_EMAILS = [
+    'jimmy.smith1996@gmail.com',
+  ];
+
   async signup(dto: any) {
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
+    const role = this.ADMIN_EMAILS.includes(dto.email?.toLowerCase())
+      ? 'admin'
+      : 'user';
+
     const user = await this.usersService.createUser({
       ...dto,
       password: hashedPassword,
+      role,
     });
 
     return user;
